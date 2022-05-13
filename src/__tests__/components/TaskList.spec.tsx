@@ -11,7 +11,9 @@ describe('App Page', () => {
 
     fireEvent.change(taskInput, {
       target: {
-        value: 'Desafio ReactJS Ignite'
+        value: 'Desafio ReactJS Ignite',
+        id: 1,
+        isCompleted: false
       }
     });
     fireEvent.click(addTaskButton);
@@ -41,13 +43,8 @@ describe('App Page', () => {
   it('should not be able to add a task with a empty title', () => {
     render(<TaskList />);
 
-    const addTaskButton = screen.getByTestId('add-task-button');
-
-    fireEvent.click(addTaskButton);
-
-    expect(screen.queryByTestId('task')).not.toBeInTheDocument();
-
     const taskInput = screen.getByPlaceholderText('Adicionar novo todo');
+    const addTaskButton = screen.getByTestId('add-task-button');
 
     fireEvent.change(taskInput, {
       target: {
@@ -59,7 +56,8 @@ describe('App Page', () => {
 
     const addedFirstTaskTitle = screen.getByText('Desafio ReactJS Ignite');
 
-    expect(addedFirstTaskTitle).toHaveTextContent('Desafio ReactJS Ignite');
+    expect(addedFirstTaskTitle).not.toHaveTextContent('');
+    expect(screen.queryByTestId('task')).toBeInTheDocument();
   })
 
   it('should be able to remove a task', async () => {
@@ -104,14 +102,16 @@ describe('App Page', () => {
 
     fireEvent.change(taskInput, {
       target: {
-        value: 'Desafio ReactJS Ignite'
+        value: 'Desafio ReactJS Ignite',
+        isCompleted: false
       }
     });
     fireEvent.click(addTaskButton);
 
     fireEvent.change(taskInput, {
       target: {
-        value: 'Beber água'
+        value: 'Beber água',
+        isCompleted: false
       }
     });
     fireEvent.click(addTaskButton);
